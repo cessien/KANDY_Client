@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Kandy Client</string>
+    <string name="app_name">Kandy_Client</string>
+    <string name="alerttype">Alert Type</string>
+    <string name="tts">Text to Speech</string>
+    <string name="alertrate">Alert Rate</string>
+    <string name="distancethresh">Distance Threshold</string>
+    <string name="debug">Debug Info</string>
+    <string name="info">Swipe Left or Right to Adjust Settings. \n\nSwipe Up or Down to change value.</string>
+</resources>
