@@ -256,13 +256,13 @@ class SimpleViewer  {
         if(centerRank < 0 && leftRank < 0 && rightRank < 0){
         	vibFactor = 0.0f;
         } else if(centerRank > 0 && leftRank < 0 && rightRank < 0){
-        	vibFactor = (norm_intens[1]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[1]*0.6f + norm_intens[4]*0.4f) * 100.0f;
         } else if(centerRank > 0 && leftRank < 0 && rightRank > 0){
-        	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[1]*0.5f + norm_intens[2]*0.333f + norm_intens[4]*0.333f + norm_intens[5]*0.166f) * 100.0f;
         } else if(centerRank > 0 && leftRank > 0 && rightRank < 0){
-        	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[1]*0.5f + norm_intens[0]*0.333f + norm_intens[4]*0.333f + norm_intens[3]*0.166f) * 100.0f;
         } else if(centerRank > 0 && leftRank > 0 && rightRank > 0){
-        	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[0]*0.6f + norm_intens[5]*0.4f) * 100.0f;
         } else if(centerRank < 0 && leftRank < 0 && rightRank > 0){
         	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
         } else if(centerRank < 0 && leftRank > 0 && rightRank < 0){
