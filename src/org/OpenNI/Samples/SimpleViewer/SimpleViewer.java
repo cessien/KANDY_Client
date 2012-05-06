@@ -123,7 +123,7 @@ class SimpleViewer  {
     	while(buffer.hasRemaining()){
     		if(buffer.get() < (short)1000 + (short)SimpleViewerActivity.variables[5]*100){
     			int index = buffer.position() - 1;
-    			total++;
+//    			total++;
     			pixels[index] = 0xFFFF0000;
     			
     			int x = (index) % width;
@@ -175,15 +175,15 @@ class SimpleViewer  {
 //    		}
 //    	}
     	
-    	stat = (float) (total/(640.0f*480.0f));
-
-    	if (stat > .7f){
-    		vibFactor = 100.0f;
-    	} else {
-    		vibFactor = stat * 100.0f;
-    	}
-    	Log.d("Alert", "vibFactor: "+vibFactor);
-//    	processAlerts();
+//    	stat = (float) (total/(640.0f*480.0f));
+//
+//    	if (stat > .7f){
+//    		vibFactor = 100.0f;
+//    	} else {
+//    		vibFactor = stat * 100.0f;
+//    	}
+//    	Log.d("Alert", "vibFactor: "+vibFactor);
+    	processAlerts();
     	
     	bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 
@@ -262,16 +262,17 @@ class SimpleViewer  {
         } else if(centerRank > 0 && leftRank > 0 && rightRank < 0){
         	vibFactor = (norm_intens[1]*0.5f + norm_intens[0]*0.333f + norm_intens[4]*0.333f + norm_intens[3]*0.166f) * 100.0f;
         } else if(centerRank > 0 && leftRank > 0 && rightRank > 0){
-        	vibFactor = (norm_intens[0]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[0]*0.166f + norm_intens[1]*0.166f + norm_intens[2]*0.166f
+        				+ norm_intens[3]*0.166f + norm_intens[4]*0.166f + norm_intens[5]*0.166f) * 100.0f;
         } else if(centerRank < 0 && leftRank < 0 && rightRank > 0){
         	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
         } else if(centerRank < 0 && leftRank > 0 && rightRank < 0){
-        	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[0]*0.6f + norm_intens[3]*0.4f) * 100.0f;
         } else if(centerRank < 0 && leftRank > 0 && rightRank > 0){
-        	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
+        	vibFactor = (norm_intens[0]*0.25f + norm_intens[2]*0.25f + norm_intens[3]*0.25f + norm_intens[5]*0.25f) * 50.0f;
         }
         
-        
+/*        
         //Center = C, Left = L, Right = R
         if(centerRank == 0){ //C clear
             if(leftRank == 0){ //*****CL clear*****
@@ -453,6 +454,7 @@ class SimpleViewer  {
         }
         
         vibFactor = (norm_intens[0] * 0.1f + norm_intens[1] * 0.3f + norm_intens[2] * 0.1f + norm_intens[3] * 0.1f + norm_intens[4] * 0.3f + norm_intens[5] * 0.1f) * 100.0f;
+*/
         Log.d("Alert", "vibFactor: " + vibFactor);
     }
     
