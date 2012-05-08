@@ -265,17 +265,24 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		}.start();
 		
 		new Thread(){
+			boolean wait = false;
 			public void run(){
 				for(;;){
 					if(variables[2] == 1){
 						if(mTts != null)
-							mTts.speak(SimpleViewer.alertMsg, TextToSpeech.QUEUE_FLUSH, myHashRender);
+							if(!wait){
+								mTts.speak(SimpleViewer.alertMsg, TextToSpeech.QUEUE_FLUSH, myHashRender);
+								wait = true;
+							}
 						else
 							Log.d("TTS", "mTts not initialized.");
-						try {
-							sleep((long) (15000));
-						} catch (InterruptedException e) {
-							e.printStackTrace();
+						if (wait) {
+							try {
+								sleep((long) (5000));
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							wait = false;
 						}
 					}
 				}
