@@ -1,5 +1,6 @@
 package org.OpenNI.Samples.SimpleViewer;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.OpenNI.Samples.Assistant.OpenNIBaseActivity;
@@ -32,6 +33,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.Vibrator;
@@ -82,10 +84,11 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 	private MediaPlayer mp;
 	private MediaPlayer mp2;
 	
-	//tts stuff
-	private  int MY_DATA_CHECK_CODE = 0;	
-	private TextToSpeech mTts; 
-	
+	//TTS stuff
+		private  int MY_DATA_CHECK_CODE = 0;	
+		private TextToSpeech mTts;
+		HashMap<String, String> myHashRender;
+		
 	private ViewPager aPager; // View Pager Stuff
 	private static int NUM_VIEWS = 7;
 	private Context cxt;
@@ -129,9 +132,11 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		//startService(new Intent(Kandy_ClientActivity.this, KinectService.class));
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-		Intent checkIntent = new Intent();
-		checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-		startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);	
+		//TTS stuff
+				Intent checkIntent = new Intent();
+				myHashRender = new HashMap();
+				checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+				startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);	
 		
 		Log.d("TTS",""+mTts.SUCCESS);
 		
@@ -159,6 +164,61 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		Log.d(TAG, "create done");
 	}
 	
+	private void initTTS(){		
+		mTts.setLanguage(Locale.ENGLISH);
+		File sampleFile = new File(Environment.getExternalStorageDirectory()+"/Kandy/TTS/", "Off.wav");
+		sampleFile.mkdirs();
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Off");
+		int test=mTts.synthesizeToFile("Off", myHashRender, sampleFile.getPath());
+		Log.d("TTS",sampleFile.getPath()+" render file result: "+test);
+		mTts.addSpeech("Off", sampleFile.getPath());
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "On");
+		mTts.synthesizeToFile("On", myHashRender, "/sdcard/Kandy/TTS/On.wav");
+		mTts.addSpeech("On", "/sdcard/Kandy/TTS/On.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Vibrate and Beep");
+		mTts.synthesizeToFile("Vibrate and Beep", myHashRender, "/sdcard/Kandy/TTS/VaB.wav");
+		mTts.addSpeech("Vibrate and Beep", "/sdcard/Kandy/TTS/VaB.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Vibrate Only");
+		mTts.synthesizeToFile("Vibrate Only", myHashRender, "/sdcard/Kandy/TTS/VO.wav");
+		mTts.addSpeech("Vibrate Only", "/sdcard/Kandy/TTS/VO.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Beep Only");
+		mTts.synthesizeToFile("Beep Only", myHashRender, "/sdcard/Kandy/TTS/BO.wav");
+		mTts.addSpeech("Beep Only", "/sdcard/Kandy/TTS/BO.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Debug");
+		mTts.synthesizeToFile("Debug", myHashRender, "/sdcard/Kandy/TTS/Debug.wav");
+		mTts.addSpeech("Debug", "/sdcard/Kandy/TTS/Debug.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Main Menu");
+		mTts.synthesizeToFile("Main Menu", myHashRender, "/sdcard/Kandy/TTS/Menu.wav");
+		mTts.addSpeech("Main Menu", "/sdcard/Kandy/TTS/Menu.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Text to Speech");
+		mTts.synthesizeToFile("Text to Speech", myHashRender, "/sdcard/Kandy/TTS/TTS.wav");
+		mTts.addSpeech("Text to Speech", "/sdcard/Kandy/TTS/TTS.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Alert Rate");
+		mTts.synthesizeToFile("Alert Rate", myHashRender, "/sdcard/Kandy/TTS/AR.wav");
+		mTts.addSpeech("Alert Rate", "/sdcard/Kandy/TTS/AR.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Alert Type");
+		mTts.synthesizeToFile("Alert Type", myHashRender, "/sdcard/Kandy/TTS/AT.wav");
+		mTts.addSpeech("Alert Type", "/sdcard/Kandy/TTS/AT.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Distance Threshold");
+		mTts.synthesizeToFile("Distance Threshold", myHashRender, "/sdcard/Kandy/TTS/DT.wav");
+		mTts.addSpeech("Distance Threshold", "/sdcard/Kandy/TTS/DT.wav");
+
+		myHashRender.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Depth Stream");
+		mTts.synthesizeToFile("Depth Stream", myHashRender, "/sdcard/Kandy/TTS/DS.wav");
+		mTts.addSpeech("Depth Stream", "/sdcard/Kandy/TTS/DS.wav");
+
+	}
 	private void initScreen(int width, int height) {
 //		surfaceKinect = (SurfaceView)findViewById(R.id.kinectSurface);
 		
@@ -270,6 +330,12 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 			mp.release();
 			mp2.release();
 		}
+		
+		if(mTts!=null){
+			mTts.stop();
+			mTts.shutdown();
+		}
+
 
 		Log.d("Kandy", "Bye Bye!");
 		android.os.Process.killProcess(android.os.Process.myPid());
@@ -279,6 +345,20 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		super.onStop();
 
 
+	}
+	
+	private void toast( String s )
+	{
+		if( toast == null )
+		{
+			toast = Toast.makeText( cxt, s, Toast.LENGTH_SHORT );
+		}
+		else
+		{
+			toast.setText( s );
+		}
+
+		toast.show();
 	}
 
 	public boolean dispatchTouchEvent(MotionEvent me){
@@ -293,10 +373,6 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		
 		switch (direction) {
 
-		//			  case SimpleGestureFilter.SWIPE_RIGHT : str = "Swipe Right";
-		//			                                           break;
-		//			  case SimpleGestureFilter.SWIPE_LEFT :  str = "Swipe Left";
-		//			                                                 break;
 		case SimpleGestureFilter.SWIPE_DOWN :  str = "Swipe Down"; dir=-1;
 		break;
 		case SimpleGestureFilter.SWIPE_UP :    str = "Swipe Up"; dir=1;
@@ -333,11 +409,11 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		new Thread(){ 
 			public void run() {					
 				if(mTts!=null)
-					mTts.speak(read, TextToSpeech.QUEUE_FLUSH, null);
+					mTts.speak(read, TextToSpeech.QUEUE_FLUSH, myHashRender);
 				else
 					Log.d("Value Changer", "TTS is null");
 			}}.start();
-		Toast.makeText(this, str+" "+read, Toast.LENGTH_SHORT).show();
+			toast(str+" "+read);
 	}
 
 	public void onDoubleTap() {
@@ -515,18 +591,11 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 			switch(v.getId()){
 			
 			}
-//			if (!connected) {
-//				serverIpAddress = serverIp.getText().toString();
-//				if (!serverIpAddress.equals("")) {
-//					cThread = new Thread(new ClientThread());
-//					cThread.start();
-//				}
-//			}
 		}
 	};
 
 	public void onInit(int arg0) {
-		// TODO Auto-generated method stub
+		initTTS();
 		
 	}
 }
