@@ -241,6 +241,8 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+					} else {
+						vib.cancel();
 					}
 				}
 			}
@@ -254,6 +256,24 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 						mp.start();
 						try {
 							sleep((long) (2000*(1.0f - SimpleViewer.vibFactor/100.0f)));
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}.start();
+		
+		new Thread(){
+			public void run(){
+				for(;;){
+					if(variables[2] == 1){
+						if(mTts != null)
+							mTts.speak(SimpleViewer.alertMsg, TextToSpeech.QUEUE_FLUSH, myHashRender);
+						else
+							Log.d("TTS", "mTts not initialized.");
+						try {
+							sleep((long) (15000));
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -309,6 +329,8 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 //			long[] pattern = {(long) 10, 100};
 			vib.cancel();
 			vib.vibrate(pattern, 0);
+		} else {
+			vib.cancel();
 		}
 		
 		return true;
@@ -317,23 +339,32 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 	public void onStop() {		
 		Log.d("Kandy", "Closing Program...");
 
+//		SimpleViewer.vibFactor = 0.0f;
 		if(socket!=null)
 			socket.close();
 
-		if(vib!=null)
+		if(vib!=null){
 			vib.cancel();
+			vib = null;
+		}
 
 		isRunning = false;
 		cThread=null; 
 
 		if(mp != null) {
 			mp.release();
+			mp = null;
+		}
+		
+		if(mp2 != null) {
 			mp2.release();
+			mp2 = null;
 		}
 		
 		if(mTts!=null){
 			mTts.stop();
 			mTts.shutdown();
+			mTts = null;
 		}
 
 
@@ -345,6 +376,7 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		super.onStop();
 
 
+		
 	}
 	
 	private void toast( String s )
@@ -381,16 +413,19 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		
 		int position = aPager.getCurrentItem();
 		switch (position) {	
+		//Text to speech
 		case 2:
 			if(variables[position]==1)
 				variables[position]=0;
 			else variables[position] = 1;
 			read = (variables[position] == 0)?"Off":"On";
 			break;
+		//Alert rate
 		case 3:
 			variables[position] = Math.min(Math.max(variables[position]+=dir,0),10);
 			read = ""+variables[position];
 			break;
+		//Alert type
 		case 4:
 			variables[position] = Math.min(Math.max(variables[position]+=dir,0),2);
 			if(variables[position] == 0){
@@ -400,7 +435,8 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 			} else {
 				read = "Beep Only";
 			}
-			break;     
+			break;  
+		//Distance threshold
 		case 5:
 			variables[position] = Math.min(Math.max(variables[position]+=dir,0),10);
 			read = ""+variables[position];

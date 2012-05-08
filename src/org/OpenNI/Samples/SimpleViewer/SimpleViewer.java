@@ -40,6 +40,7 @@ class SimpleViewer  {
 	int centerRank, leftRank, rightRank;
 	
 	static float vibFactor = 0.0f;
+	static String alertMsg = "";
     
     public static final String SAMPLE_XML_FILE = "SamplesConfig.xml";    
     public SimpleViewer() {
@@ -253,23 +254,31 @@ class SimpleViewer  {
             rightRank = 2;
         }
 
-        if(centerRank < 0 && leftRank < 0 && rightRank < 0){
+        if(centerRank == 0 && leftRank == 0 && rightRank == 0){
         	vibFactor = 0.0f;
-        } else if(centerRank > 0 && leftRank < 0 && rightRank < 0){
+        	alertMsg = "";
+        } else if(centerRank > 0 && leftRank == 0 && rightRank == 0){
         	vibFactor = (norm_intens[1]*0.6f + norm_intens[4]*0.4f) * 100.0f;
-        } else if(centerRank > 0 && leftRank < 0 && rightRank > 0){
+        	alertMsg = "There is an obstruction in front.";
+        } else if(centerRank > 0 && leftRank == 0 && rightRank > 0){
         	vibFactor = (norm_intens[1]*0.5f + norm_intens[2]*0.333f + norm_intens[4]*0.333f + norm_intens[5]*0.166f) * 100.0f;
-        } else if(centerRank > 0 && leftRank > 0 && rightRank < 0){
+        	alertMsg = "Please step left.";
+        } else if(centerRank > 0 && leftRank > 0 && rightRank == 0){
         	vibFactor = (norm_intens[1]*0.5f + norm_intens[0]*0.333f + norm_intens[4]*0.333f + norm_intens[3]*0.166f) * 100.0f;
+        	alertMsg = "Please step right.";
         } else if(centerRank > 0 && leftRank > 0 && rightRank > 0){
         	vibFactor = (norm_intens[0]*0.166f + norm_intens[1]*0.166f + norm_intens[2]*0.166f
         				+ norm_intens[3]*0.166f + norm_intens[4]*0.166f + norm_intens[5]*0.166f) * 100.0f;
-        } else if(centerRank < 0 && leftRank < 0 && rightRank > 0){
+        	alertMsg = "There are many obstructions in this direction.";
+        } else if(centerRank == 0 && leftRank == 0 && rightRank > 0){
         	vibFactor = (norm_intens[2]*0.6f + norm_intens[5]*0.4f) * 100.0f;
-        } else if(centerRank < 0 && leftRank > 0 && rightRank < 0){
+        	alertMsg = "There is an obstruction on the right.";
+        } else if(centerRank == 0 && leftRank > 0 && rightRank == 0){
         	vibFactor = (norm_intens[0]*0.6f + norm_intens[3]*0.4f) * 100.0f;
-        } else if(centerRank < 0 && leftRank > 0 && rightRank > 0){
+        	alertMsg = "There is an obstruction on the left.";
+        } else if(centerRank == 0 && leftRank > 0 && rightRank > 0){
         	vibFactor = (norm_intens[0]*0.25f + norm_intens[2]*0.25f + norm_intens[3]*0.25f + norm_intens[5]*0.25f) * 50.0f;
+        	alertMsg = "There are obstructions to the left and right.";
         }
         
 /*        
@@ -455,6 +464,7 @@ class SimpleViewer  {
         
         vibFactor = (norm_intens[0] * 0.1f + norm_intens[1] * 0.3f + norm_intens[2] * 0.1f + norm_intens[3] * 0.1f + norm_intens[4] * 0.3f + norm_intens[5] * 0.1f) * 100.0f;
 */
+        Log.d("Alert", "leftRank, centerRank, rightRank: " + leftRank + ", " + centerRank + ", " + rightRank);
         Log.d("Alert", "vibFactor: " + vibFactor);
     }
     
