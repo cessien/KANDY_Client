@@ -252,7 +252,7 @@ public class SimpleViewerActivity extends OpenNIBaseActivity implements OnInitLi
 		new Thread(){
 			public void run(){
 				for(;;){
-					if(variables[4] == 0 || variables[4] == 2){
+					if(SimpleViewer.vibFactor != 0 && (variables[4] == 0 || variables[4] == 2)){
 						mp.start();
 						try {
 							sleep((long) (2000*(1.0f - SimpleViewer.vibFactor/100.0f)));
